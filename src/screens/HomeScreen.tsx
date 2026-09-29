@@ -3,18 +3,20 @@ import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TextInput } from 'react-native';
 import { colors } from '../theme/colors';
 
+// Importamos nuestros nuevos componentes y los datos
+import ProjectCard from '../components/ProjectCard';
+import TaskItem from '../components/TaskItem';
+import { proyectosMock, tareasMock } from '../data/mockData';
+
 export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         
-        {/* 1. Cabecera y Saludo */}
         <View style={styles.header}>
           <Text style={styles.title}>Bienvenido, Salung</Text>
-          {/* Aquí irán los íconos de notificaciones y calendario después */}
         </View>
 
-        {/* 2. Barra de Búsqueda */}
         <View style={styles.searchContainer}>
           <TextInput 
             style={styles.searchInput} 
@@ -23,31 +25,32 @@ export default function HomeScreen() {
           />
         </View>
 
-        {/* 3. Sección de Rendimiento */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Tu rendimiento</Text>
           <View style={styles.placeholderCard}>
-            <Text style={styles.placeholderText}>[Aquí irá el Mapa de Calor]</Text>
+            <Text style={styles.placeholderText}>[Mapa de Calor: Fase 4]</Text>
           </View>
         </View>
 
-        {/* 4. Sección de Proyectos */}
+        {/* Sección de Proyectos con Scroll Horizontal */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Proyectos</Text>
-          <View style={styles.placeholderCard}>
-            <Text style={styles.placeholderText}>[Aquí irán las Tarjetas de Proyectos]</Text>
-          </View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+            {proyectosMock.map((proyecto) => (
+              <ProjectCard key={proyecto.id} proyecto={proyecto} />
+            ))}
+          </ScrollView>
         </View>
 
-        {/* 5. Tareas de Hoy */}
+        {/* Sección de Tareas de Hoy */}
         <View style={styles.section}>
           <View style={styles.headerRow}>
             <Text style={styles.sectionTitle}>Tareas de hoy</Text>
             <Text style={styles.seeAll}>Ver todo</Text>
           </View>
-          <View style={styles.placeholderCard}>
-            <Text style={styles.placeholderText}>[Aquí irá la Lista de Tareas]</Text>
-          </View>
+          {tareasMock.map((tarea) => (
+            <TaskItem key={tarea.id} tarea={tarea} />
+          ))}
         </View>
 
       </ScrollView>
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 20,
-    paddingBottom: 100, // Espacio para el botón flotante futuro
+    paddingBottom: 100,
   },
   header: {
     marginTop: 20,
@@ -100,6 +103,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.textPrimary,
     marginBottom: 15,
+  },
+  horizontalScroll: {
+    marginHorizontal: -20, // Permite que el scroll toque los bordes de la pantalla
+    paddingHorizontal: 20,
   },
   seeAll: {
     fontSize: 14,
