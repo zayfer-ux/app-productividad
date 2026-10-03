@@ -1,7 +1,8 @@
 // App.tsx
 import React from 'react';
-import HomeScreen from './src/screens/HomeScreen';
+import AppNavigator from './src/navigation/AppNavigator';
 
 export default function App() {
-  return <HomeScreen />;
+  // Ahora la app arranca desde el sistema de navegación
+  return <AppNavigator />;
 }
