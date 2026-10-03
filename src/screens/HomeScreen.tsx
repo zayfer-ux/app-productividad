@@ -3,7 +3,8 @@ import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TextInput } from 'react-native';
 import { colors } from '../theme/colors';
 
-// Importamos nuestros nuevos componentes y los datos
+// Importamos nuestros componentes y los datos
+import HeatmapWidget from '../components/HeatmapWidget';
 import ProjectCard from '../components/ProjectCard';
 import TaskItem from '../components/TaskItem';
 import { proyectosMock, tareasMock } from '../data/mockData';
@@ -25,11 +26,9 @@ export default function HomeScreen() {
           />
         </View>
 
+        {/* Sección de Rendimiento (Ahora con el Heatmap real) */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Tu rendimiento</Text>
-          <View style={styles.placeholderCard}>
-            <Text style={styles.placeholderText}>[Mapa de Calor: Fase 4]</Text>
-          </View>
+          <HeatmapWidget />
         </View>
 
         {/* Sección de Proyectos con Scroll Horizontal */}
@@ -105,24 +104,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   horizontalScroll: {
-    marginHorizontal: -20, // Permite que el scroll toque los bordes de la pantalla
+    marginHorizontal: -20,
     paddingHorizontal: 20,
   },
   seeAll: {
     fontSize: 14,
     color: colors.textSecondary,
   },
-  placeholderCard: {
-    backgroundColor: colors.surface,
-    borderRadius: 20,
-    padding: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  placeholderText: {
-    color: colors.textSecondary,
-    fontStyle: 'italic',
-  }
 });
