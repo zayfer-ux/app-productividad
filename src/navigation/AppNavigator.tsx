@@ -2,7 +2,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-// ¡Aquí está la magia! Importamos 3 familias de íconos distintas
 import { Ionicons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 
@@ -21,11 +20,9 @@ export default function AppNavigator() {
         screenOptions={({ route }) => ({
           headerShown: false,
           tabBarIcon: ({ focused }) => {
-            const iconSize = 24;
-            // Colores exactos de tu imagen (Negro activo, Gris tenue inactivo)
-            const tintColor = focused ? '#000000' : '#9E9E9E';
+            const iconSize = 25; // Tamaño equilibrado
+            const tintColor = focused ? '#000000' : '#8E8E93'; // Un gris ligeramente más oscuro para mejor contraste
 
-            // Asignamos el ícono perfecto buscando en múltiples librerías
             if (route.name === 'Inicio') {
               return <Ionicons name={focused ? 'home' : 'home-outline'} size={iconSize} color={tintColor} />;
             } 
@@ -33,24 +30,23 @@ export default function AppNavigator() {
               return <Ionicons name={focused ? 'folder' : 'folder-outline'} size={iconSize} color={tintColor} />;
             } 
             else if (route.name === 'Progreso') {
-              // Feather 'external-link' es lo más parecido nativamente a tu caja con flecha
               return <Feather name="external-link" size={iconSize} color={tintColor} />;
             } 
             else if (route.name === 'Calendario') {
-              // MaterialCommunityIcons tiene el calendario más parecido al de tu diseño
               return <MaterialCommunityIcons name={focused ? 'calendar-month' : 'calendar-month-outline'} size={iconSize} color={tintColor} />;
             } 
             else if (route.name === 'Perfil') {
-              return <Ionicons name={focused ? 'person-circle' : 'person-circle-outline'} size={iconSize + 2} color={tintColor} />;
+              return <Ionicons name={focused ? 'person-circle' : 'person-circle-outline'} size={iconSize + 3} color={tintColor} />;
             }
           },
-          tabBarActiveTintColor: '#000000', // Texto Negro cuando está activo
-          tabBarInactiveTintColor: '#9E9E9E', // Texto Gris cuando está inactivo
+          tabBarActiveTintColor: '#000000',
+          tabBarInactiveTintColor: '#8E8E93', // Gris mejorado
           tabBarShowLabel: true,
           tabBarLabelStyle: {
-            fontSize: 10, // Letra pequeñita y elegante como en la imagen
+            fontSize: 11, // Letra un poco más grande
             fontWeight: '600',
-            marginTop: 4,
+            marginTop: 2, // Menos espacio arriba
+            marginBottom: 10, // Más espacio abajo para que no se corte
           },
           tabBarStyle: {
             position: 'absolute',
@@ -58,13 +54,13 @@ export default function AppNavigator() {
             left: 20,
             right: 20,
             backgroundColor: '#ffffff',
-            borderRadius: 40, // Curvatura perfecta tipo píldora
-            height: 70, // Altura exacta para centrar íconos y textos
+            borderRadius: 40,
+            height: 75, // Barra un poco más alta para que quepa todo sin problemas
             borderTopWidth: 0,
-            paddingBottom: 10, // Ajuste para el texto
-            paddingTop: 10, // Ajuste para los íconos
-            elevation: 10, // Sombra en Android
-            shadowColor: '#000', // Sombra en iOS
+            paddingBottom: 0, // Quitamos el padding inferior por defecto
+            paddingTop: 8, // Empujamos un poco los iconos hacia abajo
+            elevation: 10,
+            shadowColor: '#000',
             shadowOffset: { width: 0, height: 4 },
             shadowOpacity: 0.12,
             shadowRadius: 12,
