@@ -1,15 +1,26 @@
 // src/screens/HomeScreen.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TextInput } from 'react-native';
 import { colors } from '../theme/colors';
 
-// Importamos nuestros componentes y los datos
 import HeatmapWidget from '../components/HeatmapWidget';
 import ProjectCard from '../components/ProjectCard';
 import TaskItem from '../components/TaskItem';
 import { proyectosMock, tareasMock } from '../data/mockData';
 
 export default function HomeScreen() {
+  // 1. Creamos la "memoria" para guardar lo que el usuario escribe
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // 2. Lógica de filtrado en tiempo real
+  const proyectosFiltrados = proyectosMock.filter(proyecto => 
+    proyecto.titulo.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const tareasFiltradas = tareasMock.filter(tarea => 
+    tarea.titulo.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
@@ -18,38 +29,50 @@ export default function HomeScreen() {
           <Text style={styles.title}>Bienvenido, Misael</Text>
         </View>
 
+        {/* Barra de Búsqueda Interactiva */}
         <View style={styles.searchContainer}>
           <TextInput 
             style={styles.searchInput} 
             placeholder="Buscar proyecto, tarea, evento..." 
             placeholderTextColor={colors.textSecondary}
+            value={searchQuery} // Conectamos el valor al estado
+            onChangeText={setSearchQuery} // Actualizamos el estado cada que escribes
           />
         </View>
 
-        {/* Sección de Rendimiento (Ahora con el Heatmap real) */}
         <View style={styles.section}>
           <HeatmapWidget />
         </View>
 
-        {/* Sección de Proyectos con Scroll Horizontal */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Proyectos</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-            {proyectosMock.map((proyecto) => (
-              <ProjectCard key={proyecto.id} proyecto={proyecto} />
-            ))}
+            {/* Si no hay resultados, mostramos un mensaje */}
+            {proyectosFiltrados.length === 0 ? (
+              <Text style={styles.noResultsText}>No se encontraron proyectos.</Text>
+            ) : (
+              // Usamos la lista filtrada en lugar de la original
+              proyectosFiltrados.map((proyecto) => (
+                <ProjectCard key={proyecto.id} proyecto={proyecto} />
+              ))
+            )}
           </ScrollView>
         </View>
 
-        {/* Sección de Tareas de Hoy */}
         <View style={styles.section}>
           <View style={styles.headerRow}>
             <Text style={styles.sectionTitle}>Tareas de hoy</Text>
             <Text style={styles.seeAll}>Ver todo</Text>
           </View>
-          {tareasMock.map((tarea) => (
-            <TaskItem key={tarea.id} tarea={tarea} />
-          ))}
+          
+          {tareasFiltradas.length === 0 ? (
+            <Text style={styles.noResultsText}>No se encontraron tareas.</Text>
+          ) : (
+            // Usamos la lista filtrada
+            tareasFiltradas.map((tarea) => (
+              <TaskItem key={tarea.id} tarea={tarea} />
+            ))
+          )}
         </View>
 
       </ScrollView>
@@ -64,7 +87,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 20,
-    paddingBottom: 100,
+    paddingBottom: 100, // Espacio para que la barra flotante no tape el contenido final
   },
   header: {
     marginTop: 20,
@@ -111,4 +134,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.textSecondary,
   },
+  noResultsText: {
+    color: colors.textSecondary,
+    fontStyle: 'italic',
+    marginTop: 10,
+  }
 });
