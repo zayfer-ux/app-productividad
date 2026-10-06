@@ -1,7 +1,8 @@
 // src/components/HeatmapWidget.tsx
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { ContributionGraph } from 'react-native-chart-kit';
+import { useNavigation } from '@react-navigation/native';
 import { colors } from '../theme/colors';
 
 const commitsData = [
@@ -24,14 +25,23 @@ const commitsData = [
 ];
 
 export default function HeatmapWidget() {
+  const navigation = useNavigation(); // Activamos el gancho de navegación
+
   return (
     <View style={styles.card}>
       <View style={styles.header}>
         <View>
           <Text style={styles.title}>Ver tu rendimiento</Text>
-          <View style={styles.button}>
+          
+          {/* Cambiamos View por TouchableOpacity y agregamos el evento onPress */}
+          <TouchableOpacity 
+            style={styles.button}
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate('Progreso' as never)}
+          >
             <Text style={styles.buttonText}>Revisar ahora</Text>
-          </View>
+          </TouchableOpacity>
+          
         </View>
         <View style={styles.percentageContainer}>
           <Text style={styles.percentageText}>▲ +3.45%</Text>
@@ -52,7 +62,6 @@ export default function HeatmapWidget() {
             color: (opacity = 1) => `rgba(34, 34, 34, ${opacity})`,
             labelColor: () => colors.textSecondary,
           }}
-          // Esta es la línea que elimina la alerta roja:
           tooltipDataAttrs={(value: any) => {
             return {
               'data-tip': value && value.count ? `${value.count} tareas` : 'Sin tareas',
