@@ -2,8 +2,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { Ionicons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
-import { colors } from '../theme/colors';
+import TabIcon from '../components/Tabicon';
 
 import HomeScreen from '../screens/HomeScreen';
 import ProjectsScreen from '../screens/ProjectsScreen';
@@ -20,33 +19,25 @@ export default function AppNavigator() {
         screenOptions={({ route }) => ({
           headerShown: false,
           tabBarIcon: ({ focused }) => {
-            const iconSize = 25; // Tamaño equilibrado
-            const tintColor = focused ? '#000000' : '#8E8E93'; // Un gris ligeramente más oscuro para mejor contraste
+            const tintColor = focused ? '#000000' : '#8E8E93';
+            let iconName = 'home';
+            
+            if (route.name === 'Inicio') iconName = 'home';
+            else if (route.name === 'Proyectos') iconName = 'projects';
+            else if (route.name === 'Progreso') iconName = 'progress';
+            else if (route.name === 'Calendario') iconName = 'calendar';
+            else if (route.name === 'Perfil') iconName = 'profile';
 
-            if (route.name === 'Inicio') {
-              return <Ionicons name={focused ? 'home' : 'home-outline'} size={iconSize} color={tintColor} />;
-            } 
-            else if (route.name === 'Proyectos') {
-              return <Ionicons name={focused ? 'folder' : 'folder-outline'} size={iconSize} color={tintColor} />;
-            } 
-            else if (route.name === 'Progreso') {
-              return <Feather name="external-link" size={iconSize} color={tintColor} />;
-            } 
-            else if (route.name === 'Calendario') {
-              return <MaterialCommunityIcons name={focused ? 'calendar-month' : 'calendar-month-outline'} size={iconSize} color={tintColor} />;
-            } 
-            else if (route.name === 'Perfil') {
-              return <Ionicons name={focused ? 'person-circle' : 'person-circle-outline'} size={iconSize + 3} color={tintColor} />;
-            }
+            return <TabIcon name={iconName} color={tintColor} size={26} focused={focused} />;
           },
           tabBarActiveTintColor: '#000000',
-          tabBarInactiveTintColor: '#8E8E93', // Gris mejorado
+          tabBarInactiveTintColor: '#8E8E93',
           tabBarShowLabel: true,
           tabBarLabelStyle: {
-            fontSize: 11, // Letra un poco más grande
+            fontSize: 11,
             fontWeight: '600',
-            marginTop: 2, // Menos espacio arriba
-            marginBottom: 10, // Más espacio abajo para que no se corte
+            marginTop: 2,
+            marginBottom: 10,
           },
           tabBarStyle: {
             position: 'absolute',
@@ -55,15 +46,11 @@ export default function AppNavigator() {
             right: 20,
             backgroundColor: '#ffffff',
             borderRadius: 40,
-            height: 75, // Barra un poco más alta para que quepa todo sin problemas
+            height: 75,
             borderTopWidth: 0,
-            paddingBottom: 0, // Quitamos el padding inferior por defecto
-            paddingTop: 8, // Empujamos un poco los iconos hacia abajo
-            elevation: 10,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.12,
-            shadowRadius: 12,
+            paddingBottom: 0,
+            paddingTop: 8,
+            boxShadow: '0px 8px 24px rgba(0,0,0,0.08)',
           },
         })}
       >
